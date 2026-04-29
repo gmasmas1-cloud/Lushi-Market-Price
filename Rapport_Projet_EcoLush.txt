@@ -1,0 +1,89 @@
+PROJET ECOLUSH - COMPILATION ET EXPLICATIONS DU TRAVAIL EFFECTUÉ
+
+Voici le récapitulatif complet du développement de l'application EcoLush, une plateforme de comparaison de prix pour Lubumbashi.
+
+-------------------------------------------------------------------------------
+1. CONFIGURATION DU PROJET ET DÉPENDANCES
+-------------------------------------------------------------------------------
+Le projet utilise Jetpack Compose pour l'interface utilisateur et Supabase comme backend (base de données et stockage d'images).
+
+Fichiers clés :
+- build.gradle.kts : Configure les plugins (Kotlin, Compose, Serialization) et liste les bibliothèques.
+- libs.versions.toml : Centralise les versions des dépendances (Supabase, Ktor, Coil, Navigation).
+
+Fonctionnement :
+- Jetpack Compose : Framework moderne pour construire l'UI de manière déclarative.
+- Supabase (Postgrest & Storage) : Utilisé pour stocker les prix des produits et les images.
+- Coil : Utilisé pour le chargement asynchrone des images depuis le cloud.
+
+-------------------------------------------------------------------------------
+2. ARCHITECTURE DES DONNÉES (MODÈLE)
+-------------------------------------------------------------------------------
+Fichier : data/model/ProductPrice.kt
+
+Explication :
+Définit la structure d'un prix de produit avec les champs : nom, catégorie, prix, devise, nom du magasin, localisation et URL de l'image.
+L'annotation @Serializable permet de transformer cet objet en JSON pour communiquer avec Supabase.
+
+-------------------------------------------------------------------------------
+3. BACKEND ET CONNEXION (SUPABASE)
+-------------------------------------------------------------------------------
+Fichier : data/remote/SupabaseClient.kt
+
+Explication :
+Initialise le client Supabase avec l'URL du projet et la clé API.
+Il installe les modules :
+- Postgrest : Pour les requêtes SQL sur la table des prix.
+- Storage : Pour uploader et récupérer les photos des produits.
+
+-------------------------------------------------------------------------------
+4. LOGIQUE MÉTIER (VIEWMODEL)
+-------------------------------------------------------------------------------
+Fichier : ui/viewmodel/PriceViewModel.kt
+
+Fonctionnement :
+- Gestion d'état (StateFlow) : Observe la liste des prix, la recherche et l'état de chargement.
+- Fonctions CRUD :
+    - refreshPrices() : Récupère les données depuis le cloud.
+    - addPrice() : Envoie un nouveau produit (et son image) à Supabase.
+    - deletePrice() : Supprime une entrée.
+- Logique de Comparaison (groupedPrices) : Regroupe automatiquement les produits par nom et les trie du moins cher au plus cher.
+
+-------------------------------------------------------------------------------
+5. INTERFACES UTILISATEUR (SCREENS)
+-------------------------------------------------------------------------------
+
+A. Liste des Prix (PriceListScreen.kt)
+- Affiche tous les produits sous forme de cartes élégantes.
+- Comprend une barre de recherche en temps réel.
+- Permet de filtrer par catégorie (Alimentation, Électronique, etc.).
+- Chaque carte affiche l'image, le prix, le magasin et offre une option de suppression.
+
+B. Comparateur (ComparatorScreen.kt)
+- C'est le cœur de l'application.
+- Affiche les produits identiques trouvés dans différents magasins.
+- Identifie automatiquement le "MEILLEUR PRIX" avec une couleur verte distinctive pour aider l'utilisateur à économiser.
+
+C. Ajout de Produit (AddPriceScreen.kt)
+- Formulaire complet pour saisir les détails d'un produit.
+- Gestion de la sélection d'image depuis la galerie du téléphone.
+- Envoi sécurisé des données vers le serveur.
+
+-------------------------------------------------------------------------------
+6. NAVIGATION ET POINT D'ENTRÉE
+-------------------------------------------------------------------------------
+Fichier : MainActivity.kt
+
+Explication :
+Définit le flux de l'application via NavHost :
+Splash Screen -> Liste des Prix -> (Ajout / Comparateur).
+Il assure que le ViewModel est partagé entre tous les écrans pour une cohérence des données.
+
+-------------------------------------------------------------------------------
+RÉSUMÉ DES FONCTIONNALITÉS OPÉRATIONNELLES :
+-------------------------------------------------------------------------------
+1. Synchronisation Cloud : Les prix sont stockés en ligne et accessibles partout.
+2. Recherche Intelligente : Filtrage instantané par nom ou catégorie.
+3. Comparaison Automatique : Tri par prix pour trouver la meilleure offre à Lubumbashi.
+4. Gestion d'Images : Support complet des photos de produits.
+5. Interface Intuitive : Design Material 3 moderne et réactif.

@@ -1,0 +1,50 @@
+🎥 GUIDE COMPLET POUR LA VIDÉO DE PRÉSENTATION - LUSHI MARKET PRICE (ECOLUSH)
+________________________________________________________________________
+
+⏱️ STRUCTURE TEMPORELLE (5 MINUTES MAX)
+Section			Durée		Contenu
+Introduction		~40 s		Présentation de l’app, problème et Splash Screen
+Logique Comparateur	~1 min 20 s	Algorithme de comparaison (PriceViewModel.kt)
+Backend & Supabase	~1 min 20 s	Repository, Coroutines, Stockage photos
+Démonstration Live	~1 min 20 s	Ajout d'un produit et vue comparative
+Conclusion		~20 s		Récapitulatif des technologies utilisées
+________________________________________________________________________
+
+📝 SCRIPT DÉTAILLÉ
+
+1. Introduction (0:00 – 0:40)
+À l’écran : Lancez l’application. Montrez le Splash Screen (4s) puis la liste.
+Voix :
+« Bonjour. Je présente ÉcoLush (Lushi Market Price), une application Android native développée avec Jetpack Compose et Supabase. Elle permet aux habitants de Lubumbashi de comparer les prix des produits de base entre différents marchés et supermarchés pour trouver le moins cher. L'interface utilise Material Design 3 avec une gestion complète du mode sombre. »
+
+2. Logique de comparaison (0:40 – 2:00)
+À l’écran : Ouvrez PriceViewModel.kt. Montrez la variable comparisonResults et le bloc .groupBy.
+Voix :
+« La fonctionnalité clé est le comparateur. Dans mon ViewModel, j'utilise un StateFlow réactif. Je récupère les prix via le Repository, puis je les regroupe par nom de produit avec .groupBy.
+Pour chaque produit, j'identifie le prix minimum et maximum. C'est ici que j'attribue les couleurs : Vert pour le moins cher, Rouge pour le plus cher. Enfin, je trie la liste pour que les meilleures offres apparaissent en haut. C'est un algorithme réactif qui se met à jour automatiquement. »
+
+3. Intégration de Supabase (2:00 – 3:20)
+À l’écran : Ouvrez PriceRepositoryImpl.kt. Montrez les appels table.select() et storage.upload().
+Voix :
+« Côté backend, j'utilise Supabase pour la persistance en ligne. Cela permet le partage des prix entre utilisateurs en temps réel. Les appels réseau sont gérés par les Coroutines Kotlin sur le Dispatcher IO pour ne pas bloquer l'UI.
+Pour les images, j'utilise Supabase Storage. Lorsqu'on ajoute un produit, la photo est uploadée et son URL publique est stockée en base. L'affichage est géré par la bibliothèque Coil qui optimise le cache des images. »
+
+4. Démonstration Live (3:20 – 4:40)
+À l’écran : Émulateur.
+Action :
+- Cliquez sur "+", ajoutez "Farine 25kg", 45000 FC, Marché M'zee.
+- Allez dans l'onglet "Comparateur".
+Voix :
+« Je vais ajouter un relevé. Notez l'indicateur de chargement. Si je coupe internet, une gestion d'erreur robuste affiche un message persistant avec un bouton Réessayer.
+Dans le comparateur, on voit que mes deux relevés pour la farine sont bien regroupés. Le prix du Marché M'zee apparaît en vert comme étant le meilleur plan actuel. »
+
+5. Conclusion (4:40 – 5:00)
+À l’écran : Montrez l'arborescence du projet (Dossiers ui, data, viewmodel).
+Voix :
+« En résumé, ce projet respecte l'architecture MVVM, utilise Jetpack Navigation, et propose une solution concrète à un problème local via des technologies modernes. Merci de votre attention. »
+
+________________________________________________________________________
+
+📌 NOTES TECHNIQUES POUR LA VIDÉO
+- Pourquoi Supabase ? : "Pour permettre aux utilisateurs de partager les prix. Cela impose une connexion internet, d'où la gestion d'erreur réseau que j'ai implémentée."
+- Gestion d'erreur : "Les messages d'erreur restent affichés (Indefinite) tant que l'utilisateur n'a pas validé, garantissant qu'aucune information importante n'est manquée."
